@@ -1,0 +1,47 @@
+<h1>Painel do Administrador</h1>
+<p>Bem-vindo <%= user.nome %></p>
+
+<h2>Cadastrar Novo Usuário</h2>
+
+<form method="POST" action="/admin/cadastro">
+    <input type="text" name="nome" placeholder="Nome completo" required><br><br>
+    <input type="email" name="email" placeholder="E-mail" required><br><br>
+    <input type="text" name="matricula" placeholder="Matrícula" required><br><br>
+    <input type="password" name="senha" placeholder="Senha" required><br><br>
+
+    <select name="perfil" required>
+        <option value="">Selecione o Perfil</option>
+        <option value="professor">Professor</option>
+        <option value="aluno">Aluno</option>
+        <option value="administrador">Administrador</option>
+    </select><br><br>
+
+    <button type="submit">Cadastrar</button>
+</form>
+
+<hr>
+
+<h2>Usuários Cadastrados</h2>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Matrícula</th>
+        <th>Perfil</th>
+    </tr>
+
+    <% usuarios.forEach(u => { %>
+        <tr>
+            <td><%= u.id %></td>
+            <td><%= u.nome %></td>
+            <td><%= u.email %></td>
+            <td><%= u.matricula %></td>
+            <td><%= u.perfil %></td>
+        </tr>
+    <% }) %>
+</table>
+
+<br>
+<a href="/admin">Voltar ao Painel</a>

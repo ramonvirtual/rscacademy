@@ -1,0 +1,32 @@
+<h1>Gestão de Usuários</h1>
+<p>Administrador: <%= user.nome %></p>
+
+<table border="1" cellpadding="5">
+<tr>
+    <th>ID</th>
+    <th>Nome</th>
+    <th>Email</th>
+    <th>Matrícula</th>
+    <th>Perfil</th>
+    <th>Ações</th>
+</tr>
+
+<% usuarios.forEach(u => { %>
+<tr>
+    <td><%= u.id %></td>
+    <td><%= u.nome %></td>
+    <td><%= u.email %></td>
+    <td><%= u.matricula %></td>
+    <td><%= u.perfil %></td>
+    <td>
+        <a href="/admin/usuarios/editar/<%= u.id %>">Editar</a> |
+        <a href="/admin/usuarios/senha/<%= u.id %>">Alterar Senha</a> |
+        <a href="/admin/usuarios/excluir/<%= u.id %>">Excluir</a>
+        
+    </td>
+</tr>
+<% }) %>
+</table>
+
+<br>
+<a href="/admin">Voltar</a>

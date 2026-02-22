@@ -1,0 +1,13 @@
+<h1>Alterar Minha Senha</h1>
+
+<p>Usuário: <%= user.nome %></p>
+
+<form method="POST" action="/perfil/senha">
+    <input type="password" name="senhaAtual" placeholder="Senha atual" required><br><br>
+    <input type="password" name="novaSenha" placeholder="Nova senha" required><br><br>
+    <input type="password" name="confirmarSenha" placeholder="Confirmar nova senha" required><br><br>
+    <button type="submit">Alterar Senha</button>
+</form>
+
+<br>
+<a href="/logout">Sair</a>

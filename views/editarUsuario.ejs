@@ -1,0 +1,19 @@
+<h1>Editar Usuário</h1>
+
+<form method="POST" action="/admin/usuarios/editar/<%= usuario.id %>">
+
+    <input type="text" name="nome" value="<%= usuario.nome %>" required><br><br>
+    <input type="email" name="email" value="<%= usuario.email %>" required><br><br>
+    <input type="text" name="matricula" value="<%= usuario.matricula %>" required><br><br>
+
+    <select name="perfil" required>
+        <option value="administrador" <%= usuario.perfil === 'administrador' ? 'selected' : '' %>>Administrador</option>
+        <option value="professor" <%= usuario.perfil === 'professor' ? 'selected' : '' %>>Professor</option>
+        <option value="aluno" <%= usuario.perfil === 'aluno' ? 'selected' : '' %>>Aluno</option>
+    </select><br><br>
+
+    <button type="submit">Salvar Alterações</button>
+</form>
+
+<br>
+<a href="/admin/usuarios">Cancelar</a>

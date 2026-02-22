@@ -1,0 +1,12 @@
+<h1>Alterar Senha do Usuário</h1>
+
+<p>Administrador: <%= user.nome %></p>
+<p>Usuário: <%= usuario.nome %></p>
+
+<form method="POST" action="/admin/usuarios/senha/<%= usuario.id %>">
+    <input type="password" name="novaSenha" placeholder="Nova senha" required><br><br>
+    <button type="submit">Alterar Senha</button>
+</form>
+
+<br>
+<a href="/admin/usuarios">Voltar</a>
