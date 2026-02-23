@@ -1,11 +1,29 @@
 <h1>Painel Administrativo</h1>
-<p>Bem-vindo <%= user.nome %></p>
+<p>Bem-vindo, <strong><%= user.nome %></strong></p>
 
-<h3>Área de Cadastro</h3>
-<a href="/admin/cadastro">Cadastrar Novo Usuário</a>
+<hr>
 
-<h3>Área de Gestão de Usuários</h3>
-<a href="/admin/usuarios">Gerenciar Usuários</a>
+<h2>👤 Usuários</h2>
 
-<br><br>
-<a href="/logout">Sair</a>
+<a href="/admin/cadastro"><button>Cadastrar Usuário</button></a>
+<a href="/admin/usuarios"><button>Gerenciar Usuários</button></a>
+
+<hr>
+
+<h2>📚 Cadastros Acadêmicos</h2>
+
+<a href="/academico/cadastrar/curso"><button>Cadastrar Curso</button></a>
+<a href="/academico/cadastrar/turma"><button>Cadastrar Turma</button></a>
+<a href="/academico/cadastrar/disciplina"><button>Cadastrar Disciplina</button></a>
+
+<hr>
+
+<h2>🗂 Gestão Acadêmica</h2>
+
+<a href="/academico/gerenciar/cursos"><button>Gerenciar Cursos</button></a>
+<a href="/academico/gerenciar/turmas"><button>Gerenciar Turmas</button></a>
+<a href="/academico/gerenciar/disciplinas"><button>Gerenciar Disciplinas</button></a>
+
+<hr>
+
+<a href="/logout"><button style="background:red;color:white;">Sair</button></a>

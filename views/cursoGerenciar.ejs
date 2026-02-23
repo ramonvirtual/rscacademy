@@ -1,0 +1,25 @@
+<h1>Gerenciar Cursos</h1>
+
+<table border="1">
+<tr>
+<th>ID</th>
+<th>Nome</th>
+<th>Descrição</th>
+<th>Ações</th>
+</tr>
+
+<% cursos.forEach(c => { %>
+<tr>
+<td><%= c.id %></td>
+<td><%= c.nome %></td>
+<td><%= c.descricao %></td>
+<td>
+<a href="/academico/gerenciar/cursos/editar/<%= c.id %>">Editar</a> |
+<a href="/academico/gerenciar/cursos/excluir/<%= c.id %>">Excluir</a>
+</td>
+</tr>
+<% }) %>
+</table>
+
+<br>
+<a href="/admin">Voltar</a>

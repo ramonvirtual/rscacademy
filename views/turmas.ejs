@@ -1,0 +1,42 @@
+<h1>Gestão de Turmas</h1>
+
+<h3>Cadastrar Turma</h3>
+
+<form method="POST" action="/academico/turmas/criar">
+    <input type="text" name="nome" placeholder="Nome da Turma" required>
+
+    <select name="curso_id" required>
+        <option value="">Selecione o Curso</option>
+        <% cursos.forEach(c => { %>
+            <option value="<%= c.id %>"><%= c.nome %></option>
+        <% }) %>
+    </select>
+
+    <button type="submit">Criar</button>
+</form>
+
+<hr>
+
+<table border="1">
+<tr>
+    <th>ID</th>
+    <th>Turma</th>
+    <th>Curso</th>
+    <th>Ações</th>
+</tr>
+
+<% turmas.forEach(t => { %>
+<tr>
+    <td><%= t.id %></td>
+    <td><%= t.nome %></td>
+    <td><%= t.curso %></td>
+    <td>
+        <a href="/academico/turmas/editar/<%= t.id %>">Editar</a> |
+        <a href="/academico/turmas/excluir/<%= t.id %>">Excluir</a>
+    </td>
+</tr>
+<% }) %>
+</table>
+
+<br>
+<a href="/admin">Voltar</a>

@@ -1,0 +1,28 @@
+<h1>Cadastrar Disciplina</h1>
+
+<form method="POST" action="/academico/cadastrar/disciplina">
+
+    <label>Nome:</label><br>
+    <input type="text" name="nome" required><br><br>
+
+    <label>Turma:</label><br>
+    <select name="turma_id" required>
+        <% turmas.forEach(t => { %>
+            <option value="<%= t.id %>">
+                <%= t.nome %> - <%= t.curso %>
+            </option>
+        <% }) %>
+    </select><br><br>
+
+    <label>Professor:</label><br>
+    <select name="professor_id" required>
+        <% professores.forEach(p => { %>
+            <option value="<%= p.id %>"><%= p.nome %></option>
+        <% }) %>
+    </select><br><br>
+
+    <button type="submit">Salvar</button>
+</form>
+
+<br>
+<a href="/admin">Voltar</a>

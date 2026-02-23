@@ -1,0 +1,27 @@
+<h1>Cadastrar Turma</h1>
+
+<p>Usuário: <strong><%= user.nome %></strong></p>
+
+<hr>
+
+<form method="POST" action="/academico/cadastrar/turma">
+
+    <label>Nome da Turma:</label><br>
+    <input type="text" name="nome" placeholder="Ex: INFO2024.1" required>
+    <br><br>
+
+    <label>Curso:</label><br>
+    <select name="curso_id" required>
+        <option value="">Selecione o Curso</option>
+        <% cursos.forEach(c => { %>
+            <option value="<%= c.id %>"><%= c.nome %></option>
+        <% }) %>
+    </select>
+    <br><br>
+
+    <button type="submit">Salvar Turma</button>
+
+</form>
+
+<br>
+<a href="/admin"><button>Voltar ao Painel</button></a>

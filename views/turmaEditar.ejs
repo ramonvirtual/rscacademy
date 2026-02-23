@@ -1,0 +1,31 @@
+<h1>Editar Turma</h1>
+
+<p>Usuário: <strong><%= user.nome %></strong></p>
+
+<hr>
+
+<form method="POST" action="/academico/gerenciar/turmas/editar/<%= turma.id %>">
+
+    <label>Nome da Turma:</label><br>
+    <input type="text" name="nome" value="<%= turma.nome %>" required>
+    <br><br>
+
+    <label>Curso:</label><br>
+    <select name="curso_id" required>
+        <% cursos.forEach(c => { %>
+            <option value="<%= c.id %>"
+                <%= turma.curso_id === c.id ? 'selected' : '' %>>
+                <%= c.nome %>
+            </option>
+        <% }) %>
+    </select>
+    <br><br>
+
+    <button type="submit">Salvar Alterações</button>
+
+</form>
+
+<br>
+<a href="/academico/gerenciar/turmas">
+    <button>Voltar</button>
+</a>

@@ -1,0 +1,15 @@
+<h1>Editar Curso</h1>
+
+<form method="POST" action="/academico/cursos/editar/<%= curso.id %>">
+
+    <input type="text" name="nome" value="<%= curso.nome %>" required>
+    <br><br>
+
+    <textarea name="descricao"><%= curso.descricao %></textarea>
+    <br><br>
+
+    <button type="submit">Salvar</button>
+</form>
+
+<br>
+<a href="/academico/cursos">Voltar</a>

@@ -1,0 +1,29 @@
+<h1>Editar Disciplina</h1>
+
+<form method="POST" action="/academico/disciplinas/editar/<%= disciplina.id %>">
+
+    <input type="text" name="nome" value="<%= disciplina.nome %>" required>
+
+    <select name="turma_id" required>
+        <% turmas.forEach(t => { %>
+            <option value="<%= t.id %>"
+                <%= disciplina.turma_id === t.id ? 'selected' : '' %>>
+                <%= t.curso %> - <%= t.nome %>
+            </option>
+        <% }) %>
+    </select>
+
+    <select name="professor_id" required>
+        <% professores.forEach(p => { %>
+            <option value="<%= p.id %>"
+                <%= disciplina.professor_id === p.id ? 'selected' : '' %>>
+                <%= p.nome %>
+            </option>
+        <% }) %>
+    </select>
+
+    <button type="submit">Salvar</button>
+</form>
+
+<br>
+<a href="/academico/disciplinas">Voltar</a>
