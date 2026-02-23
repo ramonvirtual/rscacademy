@@ -1,34 +1,46 @@
-const { verificarLogin, verificarAdmin } = require('../middleware/authMiddleware');
 const express = require('express');
 const bcrypt = require('bcrypt');
-const User = require('../models/User');
-
 const router = express.Router();
 
-// Página Login
+const User = require('../models/User');
+const { verificarLogin, verificarAdmin } = require('../middleware/authMiddleware');
+
+/* =====================================================
+   PÁGINA LOGIN
+===================================================== */
 router.get('/', (req, res) => {
     res.render('login');
 });
 
-// Login
+/* =====================================================
+   LOGIN
+===================================================== */
 router.post('/login', async (req, res) => {
 
     const { matricula, senha } = req.body;
 
     try {
+
+        if (!matricula || !senha)
+            return res.send("Preencha matrícula e senha.");
+
         const user = await User.findByMatricula(matricula);
 
-        if (!user) return res.send("Matrícula não encontrada");
+        if (!user)
+            return res.send("Matrícula não encontrada.");
 
         const match = await bcrypt.compare(senha, user.senha);
 
-        if (!match) return res.send("Senha incorreta");
+        if (!match)
+            return res.send("Senha incorreta.");
 
         req.session.user = {
             id: user.id,
             nome: user.nome,
             perfil: user.perfil
         };
+
+        /* ===== Redirecionamento Inteligente ===== */
 
         if (user.perfil === 'administrador')
             return res.redirect('/admin');
@@ -37,81 +49,113 @@ router.post('/login', async (req, res) => {
             return res.redirect('/professor');
 
         if (user.perfil === 'aluno')
-            return res.redirect('/aluno');
+            return res.redirect('/aluno/painel');
 
     } catch (error) {
-        console.error(error);
-        res.send("Erro interno no servidor");
+        console.error("Erro no login:", error);
+        res.status(500).send("Erro interno no servidor.");
     }
 });
 
-// Rotas protegidas
-router.get('/admin', (req, res) => {
-    if (!req.session.user || req.session.user.perfil !== 'administrador')
-        return res.redirect('/');
+/* =====================================================
+   PAINÉIS POR PERFIL
+===================================================== */
+
+router.get('/admin', verificarAdmin, (req, res) => {
     res.render('admin', { user: req.session.user });
 });
 
-router.get('/professor', (req, res) => {
-    if (!req.session.user || req.session.user.perfil !== 'professor')
+router.get('/professor', verificarLogin, (req, res) => {
+
+    if (req.session.user.perfil !== 'professor')
         return res.redirect('/');
+
     res.render('professor', { user: req.session.user });
 });
 
-router.get('/aluno', (req, res) => {
-    if (!req.session.user || req.session.user.perfil !== 'aluno')
+router.get('/aluno', verificarLogin, (req, res) => {
+
+    if (req.session.user.perfil !== 'aluno')
         return res.redirect('/');
-    res.render('aluno', { user: req.session.user });
+
+    res.redirect('/aluno/painel');
 });
 
+/* =====================================================
+   LOGOUT
+===================================================== */
 router.get('/logout', (req, res) => {
     req.session.destroy(() => {
         res.redirect('/');
     });
 });
 
+/* =====================================================
+   CADASTRO DE USUÁRIO (ADMIN)
+===================================================== */
 router.get('/admin/cadastro', verificarAdmin, async (req, res) => {
+
     const usuarios = await User.listarTodos();
-    res.render('cadastroUsuario', { user: req.session.user, usuarios });
+
+    res.render('cadastroUsuario', {
+        user: req.session.user,
+        usuarios
+    });
 });
 
 router.post('/admin/cadastro', verificarAdmin, async (req, res) => {
 
     const { nome, email, matricula, senha, perfil } = req.body;
 
-    if (!nome || !email || !matricula || !senha || !perfil) {
-        return res.send("Preencha todos os campos.");
+    try {
+
+        if (!nome || !email || !matricula || !senha || !perfil)
+            return res.send("Preencha todos os campos.");
+
+        if (!['professor','aluno','administrador'].includes(perfil))
+            return res.send("Perfil inválido.");
+
+        const existeMatricula = await User.findByMatricula(matricula);
+        if (existeMatricula)
+            return res.send("Matrícula já cadastrada.");
+
+        const senhaHash = await bcrypt.hash(senha, 10);
+
+        await User.create(nome, email, matricula, senhaHash, perfil);
+
+        res.redirect('/admin/cadastro');
+
+    } catch (error) {
+        console.error("Erro ao cadastrar usuário:", error);
+        res.status(500).send("Erro interno.");
     }
-
-    if (!['professor','aluno','administrador'].includes(perfil)) {
-        return res.send("Perfil inválido.");
-    }
-
-    const existeMatricula = await User.findByMatricula(matricula);
-    if (existeMatricula) {
-        return res.send("Matrícula já cadastrada.");
-    }
-
-    const bcrypt = require('bcrypt');
-    const senhaHash = await bcrypt.hash(senha, 10);
-
-    await User.create(nome, email, matricula, senhaHash, perfil);
-
-    res.redirect('/admin/cadastro');
 });
 
+/* =====================================================
+   GESTÃO DE USUÁRIOS
+===================================================== */
+
 router.get('/admin/usuarios', verificarAdmin, async (req, res) => {
+
     const usuarios = await User.listarTodos();
-    res.render('gestaoUsuarios', { user: req.session.user, usuarios });
+
+    res.render('gestaoUsuarios', {
+        user: req.session.user,
+        usuarios
+    });
 });
 
 router.get('/admin/usuarios/editar/:id', verificarAdmin, async (req, res) => {
 
     const usuario = await User.findById(req.params.id);
 
-    if (!usuario) return res.send("Usuário não encontrado");
+    if (!usuario)
+        return res.send("Usuário não encontrado.");
 
-    res.render('editarUsuario', { user: req.session.user, usuario });
+    res.render('editarUsuario', {
+        user: req.session.user,
+        usuario
+    });
 });
 
 router.post('/admin/usuarios/editar/:id', verificarAdmin, async (req, res) => {
@@ -133,13 +177,20 @@ router.get('/admin/usuarios/excluir/:id', verificarAdmin, async (req, res) => {
     res.redirect('/admin/usuarios');
 });
 
+/* =====================================================
+   ALTERAR SENHA PELO ADMIN
+===================================================== */
 router.get('/admin/usuarios/senha/:id', verificarAdmin, async (req, res) => {
 
     const usuario = await User.findById(req.params.id);
 
-    if (!usuario) return res.send("Usuário não encontrado");
+    if (!usuario)
+        return res.send("Usuário não encontrado.");
 
-    res.render('alterarSenhaAdmin', { user: req.session.user, usuario });
+    res.render('alterarSenhaAdmin', {
+        user: req.session.user,
+        usuario
+    });
 });
 
 router.post('/admin/usuarios/senha/:id', verificarAdmin, async (req, res) => {
@@ -149,13 +200,16 @@ router.post('/admin/usuarios/senha/:id', verificarAdmin, async (req, res) => {
     if (!novaSenha || novaSenha.length < 4)
         return res.send("Senha inválida.");
 
-    const bcrypt = require('bcrypt');
     const senhaHash = await bcrypt.hash(novaSenha, 10);
 
     await User.updateSenha(req.params.id, senhaHash);
 
     res.redirect('/admin/usuarios');
 });
+
+/* =====================================================
+   ALTERAR SENHA DO PRÓPRIO USUÁRIO
+===================================================== */
 
 router.get('/perfil/senha', verificarLogin, (req, res) => {
     res.render('alterarSenhaUsuario', { user: req.session.user });
@@ -173,7 +227,6 @@ router.post('/perfil/senha', verificarLogin, async (req, res) => {
 
     const usuario = await User.findById(req.session.user.id);
 
-    const bcrypt = require('bcrypt');
     const senhaCorreta = await bcrypt.compare(senhaAtual, usuario.senha);
 
     if (!senhaCorreta)
@@ -185,4 +238,5 @@ router.post('/perfil/senha', verificarLogin, async (req, res) => {
 
     res.send("Senha alterada com sucesso.");
 });
+
 module.exports = router;

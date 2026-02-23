@@ -1,0 +1,31 @@
+<h1>Gerenciar Matrículas</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Aluno</th>
+    <th>Matrícula</th>
+    <th>Curso</th>
+    <th>Turma</th>
+    <th>Ações</th>
+</tr>
+
+<% matriculas.forEach(m => { %>
+<tr>
+    <td><%= m.id %></td>
+    <td><%= m.aluno %></td>
+    <td><%= m.matricula %></td>
+    <td><%= m.curso %></td>
+    <td><%= m.turma %></td>
+    <td>
+        <a href="/academico/gerenciar/matriculas/excluir/<%= m.id %>"
+           onclick="return confirm('Deseja excluir esta matrícula?')">
+            <button style="background:red;color:white;">Excluir</button>
+        </a>
+    </td>
+</tr>
+<% }) %>
+</table>
+
+<br>
+<a href="/admin">Voltar</a>

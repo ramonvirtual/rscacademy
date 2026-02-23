@@ -42,6 +42,7 @@ app.use('/', authRoutes);
 const cursoRoutes = require('./routes/cursoRoutes');
 const turmaRoutes = require('./routes/turmaRoutes');
 const disciplinaRoutes = require('./routes/disciplinaRoutes');
+const matriculaRoutes = require('./routes/matriculaRoutes');
 
 /*
 Agora todas as rotas acadêmicas usam
@@ -54,11 +55,18 @@ Exemplos:
 - /academico/gerenciar/turmas
 - /academico/cadastrar/disciplina
 - /academico/gerenciar/disciplinas
+- /academico/cadastrar/matricula
+- /academico/gerenciar/matriculas
 */
 
 app.use('/academico', cursoRoutes);
 app.use('/academico', turmaRoutes);
 app.use('/academico', disciplinaRoutes);
+app.use('/academico', matriculaRoutes);
+
+
+const alunoRoutes = require('./routes/alunoRoutes');
+app.use('/', alunoRoutes);
 
 /* =====================================================
    TRATAMENTO 404

@@ -1,0 +1,38 @@
+<h1>Cadastrar Matrícula</h1>
+
+<form method="POST" action="/academico/cadastrar/matricula">
+
+    <label>Alunos:</label><br>
+
+    <select name="aluno_id[]" multiple size="8" required>
+        <% alunos.forEach(a => { %>
+            <option value="<%= a.id %>">
+                <%= a.nome %> - <%= a.matricula %>
+            </option>
+        <% }) %>
+    </select>
+
+    <p style="font-size:12px;color:gray;">
+        Segure CTRL (ou CMD no Mac) para selecionar múltiplos alunos.
+    </p>
+
+    <br>
+
+    <label>Turma:</label><br>
+    <select name="turma_id" required>
+        <option value="">Selecione a Turma</option>
+        <% turmas.forEach(t => { %>
+            <option value="<%= t.id %>">
+                <%= t.curso %> - <%= t.nome %>
+            </option>
+        <% }) %>
+    </select>
+
+    <br><br>
+
+    <button type="submit">Matricular Alunos</button>
+
+</form>
+
+<br>
+<a href="/admin">Voltar</a>
