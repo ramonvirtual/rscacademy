@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel do Professor</title>
+</head>
+<body>
+
+<h1>Painel do Professor</h1>
+
+<p>Bem-vindo, <strong><%= user.nome %></strong></p>
+
+<hr>
+
+<h2>📚 Minhas Disciplinas</h2>
+
+<% if (disciplinas.length === 0) { %>
+
+    <p>Você ainda não possui disciplinas vinculadas.</p>
+
+<% } else { %>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Disciplina</th>
+            <th>Curso</th>
+            <th>Turma</th>
+            <th>Ações</th>
+        </tr>
+
+        <% disciplinas.forEach(d => { %>
+            <tr>
+                <td><%= d.nome %></td>
+                <td><%= d.curso %></td>
+                <td><%= d.turma %></td>
+                <td>
+
+                    <!-- Ver Alunos -->
+                    <a href="/professor/turma/<%= d.turma_id %>">
+                        👥 Ver Alunos
+                    </a>
+
+                    |
+
+                    <!-- Avaliações -->
+                    <a href="/professor/disciplina/<%= d.id %>/avaliacoes">
+                        📝 Avaliações
+                    </a>
+
+                    |
+
+                    <!-- Diário Completo -->
+                    <a href="/professor/disciplina/<%= d.id %>/diario">
+                        📊 Diário Completo
+                    </a>
+
+                </td>
+            </tr>
+        <% }) %>
+
+    </table>
+
+<% } %>
+
+<hr>
+
+<a href="/perfil/senha">🔐 Alterar Senha</a>
+<br><br>
+<a href="/logout">🚪 Sair</a>
+
+</body>
+</html>

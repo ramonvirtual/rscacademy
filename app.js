@@ -19,7 +19,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        secure: false, // alterar para true em produção (HTTPS)
+        secure: false, // alterar para true quando usar HTTPS
         maxAge: 1000 * 60 * 60 * 2 // 2 horas
     }
 }));
@@ -29,14 +29,14 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 /* =====================================================
-   ROTAS DE AUTENTICAÇÃO E ADMIN
+   ROTAS DE AUTENTICAÇÃO
 ===================================================== */
 
 const authRoutes = require('./routes/authRoutes');
 app.use('/', authRoutes);
 
 /* =====================================================
-   MÓDULO ACADÊMICO (CADASTRO + GERENCIAMENTO)
+   MÓDULO ACADÊMICO (ADMIN)
 ===================================================== */
 
 const cursoRoutes = require('./routes/cursoRoutes');
@@ -44,32 +44,27 @@ const turmaRoutes = require('./routes/turmaRoutes');
 const disciplinaRoutes = require('./routes/disciplinaRoutes');
 const matriculaRoutes = require('./routes/matriculaRoutes');
 
-/*
-Agora todas as rotas acadêmicas usam
-prefixo único /academico
-
-Exemplos:
-- /academico/cadastrar/curso
-- /academico/gerenciar/cursos
-- /academico/cadastrar/turma
-- /academico/gerenciar/turmas
-- /academico/cadastrar/disciplina
-- /academico/gerenciar/disciplinas
-- /academico/cadastrar/matricula
-- /academico/gerenciar/matriculas
-*/
-
 app.use('/academico', cursoRoutes);
 app.use('/academico', turmaRoutes);
 app.use('/academico', disciplinaRoutes);
 app.use('/academico', matriculaRoutes);
 
+/* =====================================================
+   PAINEL PROFESSOR
+===================================================== */
+
+const professorRoutes = require('./routes/professorRoutes');
+app.use('/', professorRoutes);
+
+/* =====================================================
+   PAINEL ALUNO
+===================================================== */
 
 const alunoRoutes = require('./routes/alunoRoutes');
 app.use('/', alunoRoutes);
 
 /* =====================================================
-   TRATAMENTO 404
+   TRATAMENTO 404 (DEVE FICAR POR ÚLTIMO)
 ===================================================== */
 
 app.use((req, res) => {
@@ -90,7 +85,7 @@ app.use((err, req, res, next) => {
 });
 
 /* =====================================================
-   INICIALIZAÇÃO
+   INICIALIZAÇÃO DO SERVIDOR
 ===================================================== */
 
 const PORT = process.env.PORT || 3000;

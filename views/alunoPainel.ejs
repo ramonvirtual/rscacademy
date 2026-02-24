@@ -1,23 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Painel do Aluno</title>
+</head>
+<body>
+
 <h1>Painel do Aluno</h1>
 
 <p>Bem-vindo, <strong><%= user.nome %></strong></p>
 
 <hr>
 
-<% if (turma) { %>
+<a href="/aluno/boletim/pdf" target="_blank">
+    📄 Gerar Boletim em PDF
+</a>
+<hr>
 
-    <h3>📚 Sua Turma</h3>
+<h2>📚 Minhas Disciplinas e Notas</h2>
 
-    <p><strong>Curso:</strong> <%= turma.curso %></p>
-    <p><strong>Turma:</strong> <%= turma.turma %></p>
+<%
+let disciplinasAgrupadas = {};
+
+dados.forEach(item => {
+
+    if (!disciplinasAgrupadas[item.disciplina_id]) {
+        disciplinasAgrupadas[item.disciplina_id] = {
+            nome: item.disciplina,
+            avaliacoes: []
+        };
+    }
+
+    disciplinasAgrupadas[item.disciplina_id].avaliacoes.push(item);
+});
+%>
+
+<% if (Object.keys(disciplinasAgrupadas).length === 0) { %>
+
+    <p>Você ainda não possui disciplinas vinculadas.</p>
 
 <% } else { %>
 
-    <p style="color:red;">
-        Você ainda não está matriculado em nenhuma turma.
-    </p>
+    <% Object.values(disciplinasAgrupadas).forEach(disc => { %>
+
+        <h3><%= disc.nome %></h3>
+
+        <table border="1" cellpadding="6">
+            <tr>
+                <th>Avaliação</th>
+                <th>Nota</th>
+            </tr>
+
+            <%
+            let soma = 0;
+            let pesoTotal = 0;
+
+            disc.avaliacoes.forEach(av => {
+
+                if (av.nota !== null && av.nota !== undefined) {
+                    soma += parseFloat(av.nota) * parseFloat(av.peso);
+                    pesoTotal += parseFloat(av.peso);
+                }
+            %>
+
+            <tr>
+                <td><%= av.titulo %></td>
+                <td><%= av.nota !== null ? av.nota : '-' %></td>
+            </tr>
+
+            <% }) %>
+
+            <tr>
+                <td><strong>Média</strong></td>
+                <td>
+                    <strong>
+                        <%= pesoTotal > 0 ? (soma / pesoTotal).toFixed(2) : '-' %>
+                    </strong>
+                </td>
+            </tr>
+
+        </table>
+
+        <br>
+
+    <% }) %>
 
 <% } %>
 
-<br>
-<a href="/logout"><button>Sair</button></a>
+<hr>
+
+<a href="/perfil/senha">🔐 Alterar Senha</a>
+<br><br>
+<a href="/logout">🚪 Sair</a>
+
+</body>
+</html>

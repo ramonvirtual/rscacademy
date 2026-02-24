@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Lançamento de Notas</title>
+</head>
+<body>
+
+<h1>Lançamento de Notas</h1>
+
+<h2><%= titulo %></h2>
+
+<p>Professor: <strong><%= user.nome %></strong></p>
+
+<hr>
+
+<% if (alunos.length === 0) { %>
+
+    <p>Nenhum aluno matriculado nesta turma.</p>
+
+<% } else { %>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Aluno</th>
+            <th>Matrícula</th>
+            <th>Nota</th>
+            <th>Ação</th>
+        </tr>
+
+        <% alunos.forEach(a => { %>
+            <tr>
+                <td><%= a.nome %></td>
+                <td><%= a.matricula %></td>
+                <td>
+                    <form method="POST" action="/professor/avaliacao/<%= avaliacaoId %>/notas">
+                        <input type="hidden" name="aluno_id" value="<%= a.aluno_id %>">
+                        <input type="number"
+                               name="nota"
+                               step="0.1"
+                               min="0"
+                               max="10"
+                               value="<%= a.nota || '' %>"
+                               required>
+                </td>
+                <td>
+                        <button type="submit">Salvar</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+
+    </table>
+
+<% } %>
+
+<br><br>
+
+<a href="javascript:history.back()">⬅ Voltar</a>
+
+</body>
+</html>

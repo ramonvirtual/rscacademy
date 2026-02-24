@@ -119,6 +119,24 @@ static async buscarTurmaDoAluno(aluno_id) {
     return rows[0] || null;
 }
 
+/* ==========================
+   LISTAR ALUNOS POR TURMA
+========================== */
+static async listarAlunosPorTurma(turma_id) {
+
+    const [rows] = await db.query(`
+        SELECT u.id,
+               u.nome,
+               u.matricula
+        FROM matriculas m
+        JOIN users u ON m.aluno_id = u.id
+        WHERE m.turma_id = ?
+        ORDER BY u.nome
+    `, [turma_id]);
+
+    return rows;
+}
+
 }
 
 

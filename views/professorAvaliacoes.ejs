@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Avaliações</title>
+</head>
+<body>
+
+<h1>Gestão de Avaliações</h1>
+
+<p>Professor: <strong><%= user.nome %></strong></p>
+
+<hr>
+
+<h2>➕ Nova Avaliação</h2>
+
+<form method="POST" action="/professor/disciplina/<%= disciplinaId %>/avaliacoes">
+
+    <label>Título da Avaliação:</label><br>
+    <input type="text" name="titulo" placeholder="Ex: Avaliação I" required>
+
+    <br><br>
+
+    <label>Peso:</label><br>
+    <input type="number" name="peso" step="0.1" min="0.1" value="1.0">
+
+    <br><br>
+
+    <button type="submit">Criar Avaliação</button>
+
+</form>
+
+<hr>
+
+<h2>📋 Avaliações Cadastradas</h2>
+
+<% if (avaliacoes.length === 0) { %>
+
+    <p>Nenhuma avaliação cadastrada ainda.</p>
+
+<% } else { %>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Peso</th>
+            <th>Data</th>
+            <th>Ações</th>
+        </tr>
+
+        <% avaliacoes.forEach(a => { %>
+            <tr>
+                <td><%= a.id %></td>
+                <td><%= a.titulo %></td>
+                <td><%= a.peso %></td>
+                <td><%= new Date(a.criado_em).toLocaleDateString('pt-BR') %></td>
+                <td>
+                    <a href="/professor/avaliacao/<%= a.id %>/notas">
+                        Lançar Notas
+                    </a>
+                </td>
+            </tr>
+        <% }) %>
+
+    </table>
+
+<% } %>
+
+<br><br>
+
+<a href="/professor/painel">⬅ Voltar ao Painel</a>
+
+</body>
+</html>

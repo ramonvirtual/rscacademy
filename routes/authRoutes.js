@@ -46,10 +46,12 @@ router.post('/login', async (req, res) => {
             return res.redirect('/admin');
 
         if (user.perfil === 'professor')
-            return res.redirect('/professor');
+            return res.redirect('/professor/painel'); // 🔥 corrigido aqui
 
         if (user.perfil === 'aluno')
             return res.redirect('/aluno/painel');
+
+        return res.redirect('/');
 
     } catch (error) {
         console.error("Erro no login:", error);
@@ -65,12 +67,15 @@ router.get('/admin', verificarAdmin, (req, res) => {
     res.render('admin', { user: req.session.user });
 });
 
+/* 
+   Mantido por compatibilidade (se alguém acessar /professor direto)
+*/
 router.get('/professor', verificarLogin, (req, res) => {
 
     if (req.session.user.perfil !== 'professor')
         return res.redirect('/');
 
-    res.render('professor', { user: req.session.user });
+    return res.redirect('/professor/painel');
 });
 
 router.get('/aluno', verificarLogin, (req, res) => {
@@ -78,7 +83,7 @@ router.get('/aluno', verificarLogin, (req, res) => {
     if (req.session.user.perfil !== 'aluno')
         return res.redirect('/');
 
-    res.redirect('/aluno/painel');
+    return res.redirect('/aluno/painel');
 });
 
 /* =====================================================

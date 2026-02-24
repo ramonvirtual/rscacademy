@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Diário da Disciplina</title>
+</head>
+<body>
+
+<h1>📊 Diário Completo da Disciplina</h1>
+
+<form method="POST" action="/professor/disciplina/<%= disciplinaId %>/diario">
+
+<table border="1" cellpadding="6">
+
+<tr>
+    <th>Aluno</th>
+    <% avaliacoes.forEach(a => { %>
+        <th><%= a.titulo %></th>
+    <% }) %>
+    <th>Média</th>
+</tr>
+
+<% alunos.forEach(aluno => { %>
+<tr>
+
+    <td><%= aluno.nome %></td>
+
+    <% 
+        let soma = 0;
+        let pesoTotal = 0;
+    %>
+
+    <% avaliacoes.forEach(av => { 
+
+        const notaObj = notas.find(n =>
+            n.aluno_id == aluno.aluno_id &&
+            n.avaliacao_id == av.id
+        );
+
+        const valor = notaObj ? notaObj.nota : '';
+
+        if (notaObj) {
+            soma += parseFloat(notaObj.nota) * parseFloat(av.peso);
+            pesoTotal += parseFloat(av.peso);
+        }
+    %>
+
+        <td>
+            <input type="number"
+                   name="notas[<%= aluno.aluno_id %>_<%= av.id %>]"
+                   step="0.1"
+                   min="0"
+                   max="10"
+                   value="<%= valor %>"
+                   style="width:60px;">
+        </td>
+
+    <% }) %>
+
+    <td>
+        <%= pesoTotal > 0 ? (soma / pesoTotal).toFixed(2) : '-' %>
+    </td>
+
+</tr>
+<% }) %>
+
+</table>
+
+<br><br>
+<button type="submit">💾 Salvar Alterações</button>
+
+</form>
+
+<br>
+<a href="/professor/painel">Voltar</a>
+
+</body>
+</html>

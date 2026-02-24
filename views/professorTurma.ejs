@@ -1,0 +1,30 @@
+<h1>Alunos da Turma</h1>
+
+<p>Professor: <%= user.nome %></p>
+
+<hr>
+
+<% if (alunos.length === 0) { %>
+
+    <p>Nenhum aluno matriculado.</p>
+
+<% } else { %>
+
+    <table border="1">
+        <tr>
+            <th>Nome</th>
+            <th>Matrícula</th>
+        </tr>
+
+        <% alunos.forEach(a => { %>
+        <tr>
+            <td><%= a.nome %></td>
+            <td><%= a.matricula %></td>
+        </tr>
+        <% }) %>
+    </table>
+
+<% } %>
+
+<br>
+<a href="/professor/painel">Voltar</a>
