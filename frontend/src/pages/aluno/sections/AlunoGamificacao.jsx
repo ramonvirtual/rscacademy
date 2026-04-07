@@ -61,7 +61,7 @@ export default function AlunoGamificacao() {
               <XPBar xp={perfil.xp_total} nivel={perfil.nivel} />
             </div>
             <div style={{ display:'flex', flexDirection:'column', gap:8, alignItems:'flex-end' }}>
-              {[{l:'XP Total',v:'⭐ '+(perfil.xp_total)},{l:'Streak',v:'🔥 '+(perfil.streak_atual)+' dias'},{l:'Medalhas',v:'🏅 '+(perfil.medalhas?.length||0)+'/${perfil.total_medalhas_disponiveis}'},{l:'Taxa Acerto',v:'🎯 '+(perfil.taxa_acerto)+'%'}].map(s=>(
+              {[{l:'XP Total',v:'⭐ '+(perfil.xp_total)},{l:'Streak',v:'🔥 '+(perfil.streak_atual)+' dias'},{l:'Medalhas',v:'🏅 '+(perfil.medalhas?.length||0)+'/'+(perfil.total_medalhas_disponiveis||0)},{l:'Taxa Acerto',v:'🎯 '+(perfil.taxa_acerto)+'%'}].map(s=>(
                 <div key={s.l} style={{ textAlign:'right' }}>
                   <div style={{ fontSize:10, opacity:.5 }}>{s.l}</div>
                   <div style={{ fontWeight:700, fontSize:14 }}>{s.v}</div>

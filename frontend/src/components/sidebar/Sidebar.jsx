@@ -22,6 +22,7 @@ const MENUS = {
       {id:'turmas',    icon:'🏫', label:'Minhas Turmas'},
       {id:'mural',     icon:'📌', label:'Mural de Avisos'},
       {id:'materiais', icon:'📁', label:'Materiais Didáticos'},
+      {id:'rag', icon:'🧠', label:'Base RAG (IA)'},
     ]},
     { section:'Análise',   items:[{id:'relatorios', icon:'📈', label:'Relatórios TRI'},{id:'boletim', icon:'📋', label:'Boletim de Notas'}] },
   ],

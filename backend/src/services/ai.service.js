@@ -245,4 +245,8 @@ async function chatWithStudent({ historico, pergunta, contexto_usuario }) {
   return await callGPT({ system, messages, maxTokens: 800 });
 }
 
-module.exports = { generateQuestion, suggestTRIParams, generateFeedback, evaluateOpenAnswer, chatWithStudent };
+async function chatWithContext({ system, messages, maxTokens = 1200 }) {
+  return await callGPT({ system, messages, maxTokens });
+}
+
+module.exports = { generateQuestion, suggestTRIParams, generateFeedback, evaluateOpenAnswer, chatWithStudent, chatWithContext };

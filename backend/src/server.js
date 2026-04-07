@@ -24,6 +24,7 @@ app.use('/api/avaliacoes',   require('./routes/avaliacao.routes'));
 app.use('/api/gamificacao',  require('./routes/gamificacao.routes'));
 app.use('/api/chatbot',      require('./routes/chatbot.routes'));
 app.use('/api/atividades',   require('./routes/atividade.routes'));
+app.use('/api/rag',          require('./routes/rag.routes'));
 app.use('/api/boletim',     require('./routes/boletim.routes'));
 app.get('/api/health', (req,res)=>res.json({status:'ok',time:new Date()}));
 
